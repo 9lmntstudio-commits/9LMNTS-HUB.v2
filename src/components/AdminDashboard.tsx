@@ -316,7 +316,7 @@ export function AdminDashboard({ onNavigate, user, accessToken, onLogout }: Admi
 
                 <div className="bg-[#111] border border-white/5 rounded-3xl overflow-hidden p-6">
                   <div className="space-y-4">
-                    {submissions.slice(-3).reverse().map((submission) => (
+                    {submissions.slice(-3).reverse().map((submission: any) => (
                       <div key={submission.id} className="border border-white/5 rounded-xl p-4 hover:bg-white/5 transition-colors">
                         <div className="flex justify-between items-start mb-3">
                           <div>

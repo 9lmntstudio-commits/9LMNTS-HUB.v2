@@ -43,6 +43,8 @@ interface Project {
   client: string;
   clientId?: string;
   createdAt: string;
+  service?: string; // Nine Pillars AI service
+  features?: string[]; // AI service features
 }
 
 interface Client {
@@ -129,22 +131,38 @@ export function AdminDashboardFull({ onNavigate, user, accessToken, onLogout }: 
     setLoading(true);
     setError('');
     try {
-      const response = await fetch(
-        `https://${projectId}.supabase.co/functions/v1/make-server-662c70dc/projects`,
+      // Use mock data for now since Supabase function doesn't exist
+      const mockProjects: Project[] = [
         {
-          headers: {
-            'Authorization': `Bearer ${accessToken}`,
-          },
+          id: '1',
+          name: 'AI Brand Voice Development',
+          type: 'AI Service',
+          status: 'active',
+          budget: 2500,
+          revenue: 2500,
+          client: 'Tech Startup Inc',
+          createdAt: '2024-01-15',
+          service: 'AI Brand Voice',
+          features: ['Custom GPT Training', 'Automated Content', 'Brand Voice AI']
+        },
+        {
+          id: '2',
+          name: 'AI Visual Design System',
+          type: 'AI Service',
+          status: 'pending',
+          budget: 2000,
+          revenue: 0,
+          client: 'Creative Agency',
+          createdAt: '2024-01-20',
+          service: 'AI Visual Design',
+          features: ['AI Logo Generation', 'Brand Identity', 'Visual Consistency']
         }
-      );
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
-        throw new Error(errorData.error || 'Failed to fetch projects');
-      }
-
-      const data = await response.json();
-      setProjects(data.projects || []);
+      ];
+      
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      setProjects(mockProjects);
     } catch (err: any) {
       console.error('Error fetching projects:', err);
       setError(err.message);
