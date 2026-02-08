@@ -49,7 +49,7 @@ export function ServicesPage({ onNavigate }: ServicesPageProps) {
       features: ['Trend Analysis', 'Competitive Intelligence', 'Innovation Reports'],
       color: '#FF7A00',
       category: 'ai-service',
-      image: 'https://images.unsplash.com/photo-1588671815815-b0cd3a9189?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxicmVha2RhbmNpbmclMjB1cmJhbiUyMGRhbmNlfGVufDF8fHx8MTc2NDcxODYyNHww&ixlib=rb-4.1.0&q=80&w=1080',
+      image: '/images/corporate-4.png',
     },
     {
       icon: Radio,
