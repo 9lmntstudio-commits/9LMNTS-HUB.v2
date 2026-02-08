@@ -6,6 +6,7 @@ Connect Loa Brain AI Empire with Notion for knowledge management and workflow au
 import asyncio
 import logging
 import json
+import os
 from datetime import datetime
 from typing import Dict, Any, List, Optional
 import requests
@@ -17,8 +18,8 @@ logger = logging.getLogger("NOTION_INTEGRATION")
 
 class NotionIntegration:
     def __init__(self):
-        self.api_key = "your_notion_integration_token_here"  # Update with actual token
-        self.database_id = "your_notion_database_id_here"  # Update with actual database ID
+        self.api_key = os.getenv("NOTION_API_KEY", "your_notion_integration_token_here")
+        self.database_id = os.getenv("NOTION_DATABASE_ID", "your_notion_database_id_here")
         self.base_url = "https://api.notion.com/v1"
         self.headers = {
             "Authorization": f"Bearer {self.api_key}",

@@ -247,6 +247,215 @@ class LOABrain:
             "automation_status": "ACTIVE",
             "scraping_status": "RUNNING 24/7"
         }
+    
+    async def qualify_lead_instantly(self, lead_info: Dict) -> Dict:
+        """Qualify lead using AI analysis"""
+        logger.info(f"Qualifying lead: {lead_info.get('name', 'Unknown')}")
+        
+        # Simulate AI qualification logic
+        qualification_score = 0
+        qualification_factors = []
+        
+        # Budget scoring (40% weight)
+        budget = str(lead_info.get('budget', '')).lower()
+        if any(amount in budget for amount in ['5000', '5k', '10000', '10k', '15000', '15k']):
+            qualification_score += 40
+            qualification_factors.append("Strong budget alignment")
+        elif any(amount in budget for amount in ['2000', '2k', '3000', '3k']):
+            qualification_score += 25
+            qualification_factors.append("Moderate budget - upsell potential")
+        
+        # Business type scoring (25% weight)
+        business_type = lead_info.get('business_type', '').lower()
+        high_value_types = ['saas', 'tech', 'agency', 'ecommerce', 'startup']
+        if any(btype in business_type for btype in high_value_types):
+            qualification_score += 25
+            qualification_factors.append("High-value business type")
+        
+        # Urgency scoring (20% weight)
+        timeline = lead_info.get('timeline', '').lower()
+        if any(urgent in timeline for urgent in ['asap', 'urgent', 'immediate', '1 week']):
+            qualification_score += 20
+            qualification_factors.append("High urgency - close quickly")
+        
+        # Project complexity scoring (15% weight)
+        project_type = lead_info.get('project_type', '').lower()
+        if any(complex in project_type for complex in ['automation', 'ai', 'transformation', 'empire']):
+            qualification_score += 15
+            qualification_factors.append("Complex project - high value")
+        
+        # Determine qualification level
+        if qualification_score >= 70:
+            level = "HOT LEAD"
+            estimated_value = "$10,000-$25,000"
+        elif qualification_score >= 50:
+            level = "WARM LEAD"
+            estimated_value = "$5,000-$10,000"
+        elif qualification_score >= 30:
+            level = "COLD LEAD"
+            estimated_value = "$2,000-$5,000"
+        else:
+            level = "NOT QUALIFIED"
+            estimated_value = "$0-$2,000"
+        
+        return {
+            "level": level,
+            "qualification_score": qualification_score,
+            "estimated_value": estimated_value,
+            "factors": qualification_factors,
+            "recommended_action": self._get_recommended_action(qualification_score)
+        }
+    
+    def _get_recommended_action(self, score: int) -> str:
+        """Get recommended action based on qualification score"""
+        if score >= 70:
+            return "IMMEDIATE CLOSING - Call within 1 hour, send proposal"
+        elif score >= 50:
+            return "URGENT FOLLOW-UP - Schedule demo today"
+        elif score >= 30:
+            return "STANDARD NURTURING - Email sequence + value prop"
+        else:
+            return "DISQUALIFY - Not ideal fit, archive"
+    
+    async def generate_urgent_sales_pitch(self, business_type: str, budget: str) -> str:
+        """Generate urgent sales pitch based on business type and budget"""
+        logger.info(f"Generating urgent pitch for {business_type} with budget {budget}")
+        
+        # AI-powered pitch generation
+        pitch_templates = {
+            "saas": f"""
+🚀 URGENT: AI TRANSFORMATION NEEDED FOR YOUR SAAS!
+
+Your SaaS is bleeding money without AI automation. I can fix this in 48 hours.
+
+💰 Investment: {budget} 
+⏱️ ROI: 3-6 months
+🔧 Services: Custom GPT + AI Automation + Analytics
+
+Book a 15-minute call TODAY and I'll show you exactly how to:
+• Reduce operational costs by 40%
+• Increase user engagement by 60%  
+• Automate 80% of your workflows
+
+This is time-sensitive - AI market is moving fast.
+Reply "READY" to schedule immediate call.
+            """,
+            
+            "ecommerce": f"""
+🛒 ECOMMERCE AI UPGRADE - {budget} BUDGET
+
+Your competitors are using AI while you're stuck manually. 
+
+🎯 What I'll deliver in 72 hours:
+• AI Product Recommendations (30% conversion lift)
+• Automated Customer Service (24/7)
+• Dynamic Pricing Engine (25% revenue increase)
+• AI Inventory Management (40% cost reduction)
+
+💡 Your current setup is costing you $5k-10k/month in lost revenue.
+
+Call me today - tomorrow could be too late.
+            """,
+            
+            "agency": f"""
+🎨 CREATIVE AGENCY AI TRANSFORMATION
+
+Stop delivering manually what AI can automate in minutes.
+
+💰 {budget} gets you:
+• AI Content Generation (unlimited blogs, social, ads)
+• Client Proposal Automation (close deals 2x faster)
+• AI Design Assistant (10x creative output)
+• Predictive Analytics (know trends before competitors)
+
+🔥 Your agency could be billing $50k+ monthly with AI.
+
+Let's schedule 30 minutes to transform your entire operation.
+            """
+        }
+        
+        # Get appropriate template or default
+        pitch = pitch_templates.get(business_type.lower(), f"""
+🚀 AI TRANSFORMATION FOR YOUR BUSINESS
+
+Budget: {budget}
+Timeline: 24-72 hours
+Services: Custom AI solutions for your specific needs
+
+Let's schedule a call to discuss your AI transformation roadmap.
+        """)
+        
+        return pitch.strip()
+    
+    async def calculate_deal_probability(self, lead_info: Dict) -> Dict:
+        """Calculate probability of closing deal"""
+        logger.info(f"Calculating deal probability for {lead_info.get('name', 'Unknown')}")
+        
+        probability_score = 0
+        factors = []
+        
+        # Budget factor (40%)
+        budget = lead_info.get('budget', '').lower()
+        if any(amount in budget for amount in ['10000', '10k', '15000', '15k', '20000', '20k']):
+            probability_score += 40
+            factors.append("Strong budget - high close rate")
+        elif any(amount in budget for amount in ['5000', '5k', '7500', '7.5k']):
+            probability_score += 25
+            factors.append("Moderate budget - good potential")
+        
+        # Urgency factor (25%)
+        timeline = lead_info.get('timeline', '').lower()
+        if any(urgent in timeline for urgent in ['asap', 'urgent', 'immediate', '1 week', '2 weeks']):
+            probability_score += 25
+            factors.append("High urgency - easier close")
+        
+        # Business type factor (20%)
+        business_type = lead_info.get('business_type', '').lower()
+        if any(ideal in business_type for ideal in ['tech', 'saas', 'agency', 'ecommerce']):
+            probability_score += 20
+            factors.append("Ideal business type for AI services")
+        
+        # Project complexity factor (15%)
+        project_type = lead_info.get('project_type', '').lower()
+        if any(complex in project_type for complex in ['automation', 'transformation', 'empire', 'full ai']):
+            probability_score += 15
+            factors.append("Complex project = higher value")
+        
+        # Convert to percentage
+        probability_percentage = min(probability_score, 95)
+        
+        # Determine action
+        if probability_percentage >= 75:
+            action = "IMMEDIATE CLOSING - Send proposal now"
+            priority = "CRITICAL"
+        elif probability_percentage >= 50:
+            action = "ACTIVE NURTURING - Schedule demo"
+            priority = "HIGH"
+        elif probability_percentage >= 30:
+            action = "STANDARD FOLLOW-UP - Add to sequence"
+            priority = "MEDIUM"
+        else:
+            action = "LOW PRIORITY - Nurture long-term"
+            priority = "LOW"
+        
+        return {
+            "probability": f"{probability_percentage}%",
+            "factors": factors,
+            "recommended_action": action,
+            "priority": priority,
+            "estimated_close_time": self._get_close_timeline(probability_percentage)
+        }
+    
+    def _get_close_timeline(self, probability: int) -> str:
+        """Get estimated close time based on probability"""
+        if probability >= 75:
+            return "24-48 hours"
+        elif probability >= 50:
+            return "3-5 days"
+        elif probability >= 30:
+            return "1-2 weeks"
+        else:
+            return "2-4 weeks"
 
 if __name__ == "__main__":
     # Test the brain locally
