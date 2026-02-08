@@ -467,7 +467,7 @@ export function AdminDashboardFull({ onNavigate, user, accessToken, onLogout }: 
       case 'prospect': return '#FF7A00';
       case 'completed': return '#00D4FF';
       case 'on-hold': return '#E91E63';
-      case 'pending': return '#F59E0B';
+      case 'pending': return '#FF7A00';
       case 'cancelled': return '#6B7280';
       default: return '#6B7280';
     }
@@ -619,8 +619,8 @@ export function AdminDashboardFull({ onNavigate, user, accessToken, onLogout }: 
 
               <div className="bg-[#0A0A0A] border border-white/10 rounded-2xl p-6">
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-xl bg-[#F59E0B]/20 flex items-center justify-center">
-                    <Briefcase className="text-[#F59E0B]" size={20} />
+                  <div className="w-10 h-10 rounded-xl bg-[#FF7A00]/20 flex items-center justify-center">
+                    <Briefcase className="text-[#FF7A00]" size={20} />
                   </div>
                   <div className="text-sm text-white/60">Total Clients</div>
                 </div>

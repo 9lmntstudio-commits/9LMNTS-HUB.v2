@@ -93,7 +93,7 @@ const chartData3 = [
 const pieData = [
   { name: 'AI Brand Voice', value: 25, color: '#00D4FF' },
   { name: 'AI Visual Design', value: 20, color: '#E91E63' },
-  { name: 'AI Business Automation', value: 30, color: '#F59E0B' },
+  { name: 'AI Business Automation', value: 30, color: '#FF7A00' },
   { name: 'AI Multilingual', value: 25, color: '#10B981' }
 ];
 
@@ -236,7 +236,7 @@ export function AdminDashboard({ onNavigate, user, accessToken, onLogout }: Admi
                   value="$3,000" 
                   change="+12%" 
                   data={chartData3} 
-                  color="#F59E0B"
+                  color="#FF7A00"
                   icon="zap"
                 />
                 <StatCard 
@@ -498,7 +498,7 @@ function TableRow({ date, amount, project, type, status, isPositive }: any) {
       <div className="col-span-1 text-right">
         <span className={`px-2 py-1 rounded-md text-[10px] font-bold uppercase ${
           status === 'Completed' ? 'bg-[#10B981]/20 text-[#10B981]' :
-          status === 'Pending' ? 'bg-[#F59E0B]/20 text-[#F59E0B]' :
+          status === 'Pending' ? 'bg-[#FF7A00]/20 text-[#FF7A00]' :
           'bg-[#E91E63]/20 text-[#E91E63]'
         }`}>
           {status}
