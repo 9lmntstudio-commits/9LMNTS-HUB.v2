@@ -100,10 +100,13 @@ const pieData = [
 export function AdminDashboard({ onNavigate, user, accessToken, onLogout }: AdminDashboardProps) {
   const [activeTab, setActiveTab] = useState('transactions');
   const [mounted, setMounted] = useState(false);
+  const [submissions, setSubmissions] = useState<any[]>([]);
 
-  // Ensure charts only render after component is mounted to avoid hydration issues
+  // Load submissions from localStorage
   useEffect(() => {
     setMounted(true);
+    const savedSubmissions = JSON.parse(localStorage.getItem('project_submissions') || '[]');
+    setSubmissions(savedSubmissions);
   }, []);
 
   return (
@@ -300,6 +303,66 @@ export function AdminDashboard({ onNavigate, user, accessToken, onLogout }: Admi
                 <TableRow date="11/03/24" amount="$0.5256" project="Micro-tx" type="Fee" status="Pending" isPositive={true} />
               </div>
             </div>
+
+            {/* Project Submissions Section */}
+            {submissions.length > 0 && (
+              <div className="mt-8">
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-xl font-bold">Recent Project Submissions</h2>
+                  <span className="text-xs font-bold text-[#FF7A00]">
+                    {submissions.length} New {submissions.length === 1 ? 'Submission' : 'Submissions'}
+                  </span>
+                </div>
+
+                <div className="bg-[#111] border border-white/5 rounded-3xl overflow-hidden p-6">
+                  <div className="space-y-4">
+                    {submissions.slice(-3).reverse().map((submission) => (
+                      <div key={submission.id} className="border border-white/5 rounded-xl p-4 hover:bg-white/5 transition-colors">
+                        <div className="flex justify-between items-start mb-3">
+                          <div>
+                            <h3 className="text-white font-bold">{submission.name}</h3>
+                            <p className="text-white/60 text-sm">{submission.email}</p>
+                            {submission.company && <p className="text-white/40 text-xs">{submission.company}</p>}
+                          </div>
+                          <span className={`px-2 py-1 rounded-md text-xs font-bold ${
+                            submission.status === 'pending' 
+                              ? 'bg-[#FF7A00]/20 text-[#FF7A00]' 
+                              : 'bg-[#10B981]/20 text-[#10B981]'
+                          }`}>
+                            {submission.status?.toUpperCase()}
+                          </span>
+                        </div>
+                        
+                        <div className="grid grid-cols-2 gap-4 text-sm">
+                          <div>
+                            <span className="text-white/40">Plan:</span>
+                            <span className="text-white ml-2 capitalize">{submission.plan}</span>
+                          </div>
+                          <div>
+                            <span className="text-white/40">Timeline:</span>
+                            <span className="text-white ml-2">{submission.timeline}</span>
+                          </div>
+                          <div className="col-span-2">
+                            <span className="text-white/40">Project Type:</span>
+                            <span className="text-white ml-2">{submission.project_type}</span>
+                          </div>
+                          {submission.description && (
+                            <div className="col-span-2">
+                              <span className="text-white/40">Description:</span>
+                              <p className="text-white/60 text-xs mt-1 line-clamp-2">{submission.description}</p>
+                            </div>
+                          )}
+                        </div>
+                        
+                        <div className="mt-3 pt-3 border-t border-white/5 text-xs text-white/40">
+                          Submitted: {new Date(submission.created_at).toLocaleDateString()}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Right Column: Portfolio & Assets */}
