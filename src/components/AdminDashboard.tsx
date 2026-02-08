@@ -21,7 +21,11 @@ import {
   DollarSign,
   Calendar,
   TrendingUp,
-  FileText
+  FileText,
+  Brain,
+  Palette,
+  Zap,
+  Globe
 } from 'lucide-react';
 import { 
   AreaChart, 
@@ -54,6 +58,8 @@ interface Project {
   revenue: number;
   client: string;
   createdAt: string;
+  service?: string; // Nine Pillars AI service
+  features?: string[]; // AI service features
 }
 
 interface Transaction {
@@ -85,9 +91,10 @@ const chartData3 = [
 ];
 
 const pieData = [
-  { name: 'Sound Clash', value: 45, color: '#00D4FF' },
-  { name: 'Wedding OS', value: 30, color: '#10B981' },
-  { name: 'Corporate', value: 25, color: '#2A3441' },
+  { name: 'AI Brand Voice', value: 25, color: '#00D4FF' },
+  { name: 'AI Visual Design', value: 20, color: '#E91E63' },
+  { name: 'AI Business Automation', value: 30, color: '#F59E0B' },
+  { name: 'AI Multilingual', value: 25, color: '#10B981' }
 ];
 
 export function AdminDashboard({ onNavigate, user, accessToken, onLogout }: AdminDashboardProps) {
@@ -136,8 +143,8 @@ export function AdminDashboard({ onNavigate, user, accessToken, onLogout }: Admi
             <div className="w-8 h-8 rounded-lg bg-[#00D4FF]/20 text-[#00D4FF] flex items-center justify-center mb-3">
               <Plus size={18} />
             </div>
-            <h4 className="text-sm font-bold mb-1">Create New Project</h4>
-            <p className="text-xs text-white/40 mb-3">Launch a new OS instance</p>
+            <h4 className="text-sm font-bold mb-1">Create New AI Service</h4>
+            <p className="text-xs text-white/40 mb-3">Launch a new Nine Pillars AI service</p>
             <button className="w-full py-2 bg-[#00D4FF] text-black text-xs font-bold rounded-lg hover:bg-[#33E0FF] transition-colors">
               Create Now
             </button>
@@ -197,7 +204,7 @@ export function AdminDashboard({ onNavigate, user, accessToken, onLogout }: Admi
         {/* Top Cards Row */}
         <section className="mb-8 relative z-10">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-bold">Active Projects</h2>
+            <h1 className="text-xl font-bold">Nine Pillars AI Services</h1>
             <div className="flex gap-4 text-xs font-bold text-white/40">
               <span className="text-white">24H</span>
               <span className="hover:text-white cursor-pointer">WEEK</span>
@@ -209,29 +216,36 @@ export function AdminDashboard({ onNavigate, user, accessToken, onLogout }: Admi
             {mounted && (
               <>
                 <StatCard 
-                  title="Sound Clash OS" 
-                  value="$13.62k" 
-                  change="+12%" 
+                  title="AI Brand Voice" 
+                  value="$2,500" 
+                  change="+15%" 
                   data={chartData1} 
                   color="#00D4FF"
-                  icon="music"
+                  icon="brain"
                 />
                 <StatCard 
-                  title="Wedding OS" 
-                  value="$8.45k" 
-                  change="-2.1%" 
+                  title="AI Visual Design" 
+                  value="$2,000" 
+                  change="+8%" 
                   data={chartData2} 
                   color="#E91E63" 
-                  isDown
-                  icon="heart"
+                  icon="palette"
                 />
                 <StatCard 
-                  title="Corporate Clash" 
-                  value="$24.1k" 
-                  change="+5.4%" 
+                  title="AI Business Automation" 
+                  value="$3,000" 
+                  change="+12%" 
                   data={chartData3} 
                   color="#F59E0B"
-                  icon="briefcase"
+                  icon="zap"
+                />
+                <StatCard 
+                  title="AI Multilingual" 
+                  value="$3,500" 
+                  change="+10%" 
+                  data={chartData1} 
+                  color="#10B981"
+                  icon="globe"
                 />
               </>
             )}
@@ -317,7 +331,7 @@ export function AdminDashboard({ onNavigate, user, accessToken, onLogout }: Admi
                  <div>
                    <h3 className="text-xl font-bold mb-1">Studio Portfolio</h3>
                    <p className="text-xs text-white/60 mb-6 max-w-[200px]">
-                     Track all your active OS instances and real-time revenue streams.
+                     Track all your active Nine Pillars AI services and real-time revenue streams.
                    </p>
                    
                    <div className="flex gap-3">
@@ -419,6 +433,10 @@ function StatCard({ title, value, change, data, color, isDown = false, icon }: a
       
       <div className="flex justify-between items-start mb-2">
         <div className="w-10 h-10 rounded-xl bg-[#1A1A1A] border border-white/10 flex items-center justify-center text-white/60 group-hover:text-white transition-colors">
+          {icon === 'brain' && <Brain size={18} />}
+          {icon === 'palette' && <Palette size={18} />}
+          {icon === 'zap' && <Zap size={18} />}
+          {icon === 'globe' && <Globe size={18} />}
           {icon === 'music' && <Users size={18} />}
           {icon === 'heart' && <Wallet size={18} />}
           {icon === 'briefcase' && <CreditCard size={18} />}

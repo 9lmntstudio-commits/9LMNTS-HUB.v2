@@ -181,7 +181,7 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
             <div className="relative max-w-lg mx-auto w-full">
               <div className="aspect-[4/5] rounded-lg overflow-hidden border-2 border-[#FF7A00]/30">
                 <img
-                  src="https://images.unsplash.com/photo-1769071166862-8cc3a6f2ac5c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBtYW4lMjBwb3J0cmFpdCUyMGZvdW5kZXJ8ZW58MXx8fHwxNzcwNDA5NjI3fDA&ixlib=rb-4.1.0&q=80&w=1080"
+                  src={founderImage}
                   alt="Darnley Sanon - Founder"
                   className="w-full h-full object-cover object-center"
                 />
