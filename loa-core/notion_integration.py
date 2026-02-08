@@ -137,7 +137,7 @@ class NotionIntegration:
                 "Expected Revenue": {"number": qualification["estimated_value"]},
                 "Contact Info": {"rich_text": [{"text": {"content": json.dumps(lead_info.get("contact_info", {}))}}]},
                 "Requirements": {"rich_text": [{"text": {"content": lead_info.get("requirements", "")}}]},
-                "AI Analysis": {"rich_text": [{"text": {"content": f"Qualification Score: {qualification['qualification_score']}%\n\nReasons:\n" + "\n".join(qualification["reasons"])}}]},
+                "AI Analysis": {"rich_text": [{"text": {"content": f"Qualification Score: {qualification['qualification_score']}%\n\nFactors:\n" + "\n".join(qualification.get("factors", []))}}]},
                 "Next Steps": {"multi_select": [{"name": qualification["recommended_action"].split()[0]}]},
                 "Created Date": {"date": {"start": datetime.now().isoformat()}},
                 "Assigned To": {"select": {"name": "Loa Brain AI"}}
