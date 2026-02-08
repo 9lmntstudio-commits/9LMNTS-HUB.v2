@@ -9,6 +9,7 @@ import json
 from datetime import datetime
 from typing import Dict, Any, List, Optional
 import requests
+import os
 from loa_brain import LOABrain, NINE_PILLARS_SERVICES
 
 # Configure logging
@@ -17,9 +18,9 @@ logger = logging.getLogger("ENHANCED_AI_SERVICES")
 
 class EnhancedAIServices:
     def __init__(self):
-        self.openai_api_key = "sk-abbc264f01284ae6b79de2ec8cd601ce"
-        self.gemini_api_key = "AIzaSyAJBoChIDH64Q_1yTeh8KaTaAJHWR9vkfw"
-        self.deepseek_api_key = "your_deepseek_key_here"  # Update when available
+        self.openai_api_key = os.getenv("OPENAI_API_KEY", "sk-abbc264f01284ae6b79de2ec8cd601ce")
+        self.gemini_api_key = os.getenv("GEMINI_API_KEY", "your_gemini_key_here")
+        self.deepseek_api_key = os.getenv("DEEPSEEK_API_KEY", "your_deepseek_key_here")
         
         self.openai_base_url = "https://api.openai.com/v1"
         self.gemini_base_url = "https://generativelanguage.googleapis.com/v1beta"
