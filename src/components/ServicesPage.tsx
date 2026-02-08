@@ -200,7 +200,7 @@ export function ServicesPage({ onNavigate }: ServicesPageProps) {
           </div>
 
           <div className="grid md:grid-cols-4 gap-8">
-            [
+            {[
               { step: '01', title: 'AI Lead Scraping', desc: '24/7 automated lead generation and qualification' },
               { step: '02', title: 'AI Proposal Generation', desc: 'Instant AI-powered proposals and pricing' },
               { step: '03', title: 'AI Service Delivery', desc: 'Automated setup and deployment of AI services' },
