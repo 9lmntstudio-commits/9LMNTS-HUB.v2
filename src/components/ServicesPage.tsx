@@ -1,4 +1,4 @@
-import { Mic2, Disc3, Paintbrush, Users, Radio, BookOpen, Lightbulb, Code, Palette } from 'lucide-react';
+import { Mic2, Disc3, Paintbrush, Users, Radio, BookOpen, Lightbulb, Code, Palette, Brain, Zap, Globe, TrendingUp, Target, DollarSign } from 'lucide-react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 
 interface ServicesPageProps {
@@ -8,67 +8,103 @@ interface ServicesPageProps {
 export function ServicesPage({ onNavigate }: ServicesPageProps) {
   const services = [
     {
-      icon: Mic2,
-      title: 'MCing Element',
-      description: 'Brand voice & messaging strategy that speaks to your audience with authentic rhythm',
+      icon: Brain,
+      title: 'AI Brand Voice & Content Generation',
+      subtitle: 'MCing Element - Custom GPT that creates content in your brand voice',
+      description: 'Transform your brand with AI-powered voice training, automated content creation, and multi-platform consistency.',
+      price: 'From $2,500',
+      features: ['Custom GPT Training', 'Automated Content', 'Brand Voice AI'],
       color: '#FF7A00',
+      category: 'ai-service',
       image: 'https://images.unsplash.com/photo-1730463527127-7c6c1c1faf6d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtaWNyb3Bob25lJTIwcmFwcGVyJTIwc3R1ZGlvfGVufDF8fHx8MTc2NDcxODYyM3ww&ixlib=rb-4.1.0&q=80&w=1080',
     },
     {
-      icon: Disc3,
-      title: 'DJing Element',
-      description: 'Mixing user experience flows to create seamless digital journeys',
+      icon: Zap,
+      title: 'AI User Experience Flow',
+      subtitle: 'DJing Element - AI-powered UX optimization and personalization',
+      description: 'Behavioral pattern analysis, dynamic user journey optimization, and AI-driven A/B testing for maximum conversion.',
+      price: 'From $3,000',
+      features: ['UX Pattern Analysis', 'Journey Optimization', 'AI Personalization'],
       color: '#FF7A00',
-      image: 'https://images.unsplash.com/photo-1600542552868-56ed242290e7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxESiUyMHR1cm50YWJsZXMlMjBtaXhpbmd8ZW58MXx8fHwxNzY0NzE4NjI0fDA&ixlib=rb-4.1.0&q=80&w=1080',
+      category: 'ai-service',
+      image: 'https://images.unsplash.com/photo-1600542552868-56ed242290e7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxESiUyMHR1cm50YWJsZSUyMG1peGluZyUyMGRhdGFiYXNlfGVufDF8fHx8MTc2NDcxODYyNHww&ixlib=rb-4.1.0&q=80&w=1080',
     },
     {
-      icon: Paintbrush,
-      title: 'Graffiti Element',
-      description: 'Bold visual design and brand identity that makes your mark on the digital landscape',
+      icon: Palette,
+      title: 'AI Visual Design System',
+      subtitle: 'Graffiti Element - AI logo and brand identity generation',
+      description: 'AI-powered logo generation, brand consistency checking, and dynamic visual adaptation for unlimited design variations.',
+      price: 'From $2,000',
+      features: ['AI Logo Generation', 'Brand Identity', 'Visual Consistency'],
       color: '#FF7A00',
-      image: 'https://images.unsplash.com/photo-1628522994788-53bc1b1502c5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxncmFmZml0aSUyMHN0cmVldCUyMGFydHxlbnwxfHx8fDE3NjQ2ODM0NDR8MA&ixlib=rb-4.1.0&q=80&w=1080',
+      category: 'ai-service',
+      image: 'https://images.unsplash.com/photo-1628522994788-53bc1b1502c5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxncmFmZml0aSUyMHN0cmVldCUyMGFydHxlbnwxfHx8fDE3NjQ4MzQ0NDR8MA&ixlib=rb-4.1.0&q=80&w=1080',
     },
     {
-      icon: Users,
-      title: 'Breaking Element',
-      description: 'Breaking conventional design patterns with innovative UI/UX solutions',
+      icon: TrendingUp,
+      title: 'AI Innovation & Disruption',
+      subtitle: 'Breaking Element - AI trend prediction and competitive intelligence',
+      description: 'Market trend analysis, automated competitive intelligence, and disruptive strategy generation for market leadership.',
+      price: 'From $1,500',
+      features: ['Trend Analysis', 'Competitive Intelligence', 'Innovation Reports'],
       color: '#FF7A00',
-      image: 'https://images.unsplash.com/photo-1588671815815-b0cd3b2a9189?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxicmVha2RhbmNpbmclMjB1cmJhbiUyMGRhbmNlfGVufDF8fHx8MTc2NDcxODYyNHww&ixlib=rb-4.1.0&q=80&w=1080',
+      category: 'ai-service',
+      image: 'https://images.unsplash.com/photo-1588671815815-b0cd3a9189?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxicmVha2RhbmNpbmclMjB1cmJhbiUyMGRhbmNlfGVufDF8fHx8MTc2NDcxODYyNHww&ixlib=rb-4.1.0&q=80&w=1080',
     },
     {
       icon: Radio,
-      title: 'Beatboxing Element',
-      description: 'Creating rhythmic interactions and animations that bring your site to life',
+      title: 'AI Interaction & Animation',
+      subtitle: 'Beatboxing Element - AI-powered interactions and real-time animation',
+      description: 'Voice interaction design, real-time animation generation, and AI avatars for immersive user experiences.',
+      price: 'From $2,000',
+      features: ['Voice Interaction', 'Animation Generation', 'AI Avatars'],
       color: '#FF7A00',
-      image: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtdXNpYyUyMHByb2R1Y3Rpb24lMjBzdHVkaW98ZW58MXx8fHwxNzY0NjczNTIyfDA&ixlib=rb-4.1.0&q=80&w=1080',
+      category: 'ai-service',
+      image: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtdXNpYyUyMHByb2R1Y3Rpb24lMjBzdHVkeW98ZW58MXx8fHwxNzY0NjczNTIyfDA&ixlib=rb-4.1.0&q=80&w=1080',
     },
     {
       icon: BookOpen,
-      title: 'Knowledge Element',
-      description: 'Content strategy and information architecture that educates and engages',
+      title: 'AI Content & Learning Systems',
+      subtitle: 'Knowledge Element - AI-powered content curation and learning',
+      description: 'AI content curation, personalized learning paths, and automated knowledge base creation for intelligent content management.',
+      price: 'From $1,000',
+      features: ['Content Curation', 'Learning Paths', 'AI Knowledge Base'],
       color: '#FF7A00',
-      image: 'https://images.unsplash.com/photo-1760869028443-07e914573a7b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx1cmJhbiUyMGxpYnJhcnklMjBib29rc3xlbnwxfHx8fDE3NjQ3MTg2MjV8MA&ixlib=rb-4.1.0&q=80&w=1080',
+      category: 'ai-service',
+      image: 'https://images.unsplash.com/photo-1760869028443-07e914573a7b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx1cmJhbiUyMGxpYnJhcnklMjBvb29rc3xlbnwxfHx8fDE3NjQ3MTg2MjV8MA&ixlib=rb-4.1.0&q=80&w=1080',
     },
     {
       icon: Lightbulb,
-      title: 'Fashion Element',
-      description: 'Trendsetting design aesthetics that keep your brand ahead of the curve',
+      title: 'AI Trend Forecasting',
+      subtitle: 'Fashion Element - Real-time trend prediction and style adaptation',
+      description: 'Real-time trend analysis, style recommendation engine, and automated aesthetic updates for staying ahead of the curve.',
+      price: 'From $2,500',
+      features: ['Trend Prediction', 'Style Recommendations', 'Aesthetic Updates'],
       color: '#FF7A00',
+      category: 'ai-service',
       image: 'https://images.unsplash.com/photo-1635650805015-2fa50682873a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzdHJlZXR3ZWFyJTIwZmFzaGlvbiUyMHVyYmFufGVufDF8fHx8MTc2NDcxNjE2NXww&ixlib=rb-4.1.0&q=80&w=1080',
     },
     {
       icon: Code,
-      title: 'Entrepreneurship Element',
-      description: 'Full-stack development and technical solutions for your business growth',
+      title: 'AI Business Automation',
+      subtitle: 'Entrepreneurship Element - AI workflow automation and optimization',
+      description: 'AI workflow automation, business process optimization, and automated decision making for scalable growth.',
+      price: 'From $3,000',
+      features: ['Workflow Automation', 'Process Optimization', 'AI Decision Making'],
       color: '#FF7A00',
+      category: 'ai-service',
       image: 'https://images.unsplash.com/photo-1540397106260-e24a507a08ea?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzdGFydHVwJTIwY29kaW5nJTIwd29ya3NwYWNlfGVufDF8fHx8MTc2NDcxODYyNnww&ixlib=rb-4.1.0&q=80&w=1080',
     },
     {
-      icon: Palette,
-      title: 'Language Element',
-      description: 'Multi-platform design language systems for consistent brand expression',
+      icon: Globe,
+      title: 'AI Multilingual Communication',
+      subtitle: 'Language Element - AI translation and cultural adaptation',
+      description: 'Real-time translation, cultural adaptation, and AI-powered localization for global brand communication.',
+      price: 'From $3,500',
+      features: ['Real-time Translation', 'Cultural Adaptation', 'AI Localization'],
       color: '#FF7A00',
-      image: 'https://images.unsplash.com/photo-1523837157348-ffbdaccfc7de?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0eXBvZ3JhcGh5JTIwZGVzaWduJTIwY3JlYXRpdmV8ZW58MXx8fHwxNzY0NjYxNjMxfDA&ixlib=rb-4.1.0&q=80&w=1080',
+      category: 'ai-service',
+      image: 'https://images.unsplash.com/photo-1523837157348-ffbdaccfc7de?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0eXBvZ3JhcGh5JTIwZGVzaWduJTIwY3JlYXRpdmU8ZW58MXx8fHwxNzY0NjYxNjMxfDA&ixlib=rb-4.1.0&q=80&w=1080',
     },
   ];
 
@@ -84,11 +120,11 @@ export function ServicesPage({ onNavigate }: ServicesPageProps) {
           </div>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl text-white mb-6">
             <span className="font-futuristic">The Nine Pillars of</span><br />
-            <span className="font-graffiti text-[#FF7A00]">Digital Dominance</span>
+            <span className="font-graffiti text-[#FF7A00]">AI-Powered Digital Dominance</span>
           </h1>
           <p className="text-lg sm:text-xl text-gray-400 max-w-3xl mx-auto">
-            Each element represents a core discipline of Hip-Hop culture, 
-            reimagined for the digital age
+            Each pillar represents a core discipline of Hip-Hop culture, 
+            reimagined with cutting-edge AI for business transformation
           </p>
         </div>
       </section>
@@ -125,65 +161,28 @@ export function ServicesPage({ onNavigate }: ServicesPageProps) {
                     <h3 className="text-white text-xl mb-3 group-hover:text-[#FF7A00] transition-colors">
                       {service.title}
                     </h3>
+                    <p className="text-gray-400 text-sm mb-3 leading-relaxed">
+                      {service.subtitle}
+                    </p>
                     <p className="text-gray-400 leading-relaxed">
                       {service.description}
                     </p>
+                    <div className="mt-4">
+                      <span className="text-[#00D4FF] font-semibold">{service.price}</span>
+                    </div>
+                    <div className="mt-3">
+                      <div className="flex flex-wrap gap-2">
+                        {service.features.map((feature, index) => (
+                          <span key={index} className="px-2 py-1 bg-[#222222] border border-[#FF7A00]/20 rounded text-xs text-gray-300">
+                            {feature}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 </div>
               );
             })}
-          </div>
-        </div>
-      </section>
-
-      {/* Graffiti Element Showcase */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-3xl sm:text-4xl text-white mb-6">
-                <span className="font-graffiti text-[#00D4FF]">7-Day Agentic Sprint:</span><br />
-                <span className="font-futuristic">AI-Powered MVPs & Automation</span>
-              </h2>
-              <p className="text-gray-400 text-lg mb-6 leading-relaxed">
-                Turn your business into an autonomous revenue machine in one week. 
-                We deploy custom AI agents, build rapid MVPs, and automate your highest-value 
-                workflows using cutting-edge tools like Lovable, n8n, CrewAI, and Supabase. 
-                From lead qualification to content factories—we ship production-ready solutions fast.
-              </p>
-              <ul className="space-y-3 mb-8">
-                {[
-                  'AI Digital Twins for customer service & FAQ automation',
-                  'WhatsApp/SMS lead qualification bots (30-second response)',
-                  'MVP development with Lovable + Supabase',
-                  'CrewAI workflow automation (LinkedIn scraping, email outreach)',
-                  'Content factories (1 speech → 30 viral clips)',
-                  'Vector search for intelligent product catalogs',
-                ].map((item, index) => (
-                  <li key={index} className="text-gray-400 flex items-start">
-                    <span className="text-[#00D4FF] mr-3 text-xl">✓</span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <button
-                onClick={() => onNavigate('start-project')}
-                className="px-8 py-4 bg-[#00D4FF] text-[#050505] font-semibold rounded-lg hover:bg-[#00D4FF]/90 transition-all shadow-[0_0_20px_rgba(0,212,255,0.3)]"
-              >
-                Start Your Sprint
-              </button>
-            </div>
-            <div className="relative">
-              <div className="aspect-square rounded-lg overflow-hidden border-2 border-[#00D4FF]/30">
-                <ImageWithFallback
-                  src="https://images.unsplash.com/photo-1729184648177-937c20cc3166?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxBSSUyMGF1dG9tYXRpb24lMjB0ZWNobm9sb2d5JTIwZnV0dXJpc3RpYyUyMGludGVyZmFjZSUyMGRhc2hib2FyZHxlbnwxfHx8fDE3NzAwMDgwMzh8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
-                  alt="AI Automation Dashboard"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-[#00D4FF]/20 rounded-lg blur-2xl"></div>
-              <div className="absolute -top-6 -left-6 w-32 h-32 bg-[#00D4FF]/20 rounded-lg blur-2xl"></div>
-            </div>
           </div>
         </div>
       </section>
@@ -193,19 +192,19 @@ export function ServicesPage({ onNavigate }: ServicesPageProps) {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-5xl text-white mb-4">
-              <span className="font-futuristic">Our</span> <span className="font-graffiti text-[#FF7A00]">Process</span>
+              <span className="font-futuristic">Our</span> <span className="font-graffiti text-[#FF7A00]">AI Sales Process</span>
             </h2>
             <p className="text-gray-400 text-lg">
-              A systematic flow from concept to launch
+              Automated lead generation, qualification, and closing - 24/7
             </p>
           </div>
 
           <div className="grid md:grid-cols-4 gap-8">
-            {[
-              { step: '01', title: 'Discovery', desc: 'Understanding your vision and goals' },
-              { step: '02', title: 'Design', desc: 'Crafting the visual experience' },
-              { step: '03', title: 'Develop', desc: 'Building with cutting-edge tech' },
-              { step: '04', title: 'Deploy', desc: 'Launching your digital presence' },
+            [
+              { step: '01', title: 'AI Lead Scraping', desc: '24/7 automated lead generation and qualification' },
+              { step: '02', title: 'AI Proposal Generation', desc: 'Instant AI-powered proposals and pricing' },
+              { step: '03', title: 'AI Service Delivery', desc: 'Automated setup and deployment of AI services' },
+              { step: '04', title: 'Revenue Collection', desc: 'Automated invoicing and payment processing' },
             ].map((phase, index) => (
               <div key={index} className="relative">
                 <div className="text-6xl text-[#FF7A00]/20 mb-4">{phase.step}</div>
@@ -224,17 +223,17 @@ export function ServicesPage({ onNavigate }: ServicesPageProps) {
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl sm:text-5xl text-white mb-6">
-            <span className="font-futuristic">Ready to Create Something</span><br />
-            <span className="font-graffiti text-[#FF7A00]">Legendary?</span>
+            <span className="font-futuristic">Ready to Build Your</span><br />
+            <span className="font-graffiti text-[#FF7A00]">AI Empire?</span>
           </h2>
           <p className="text-gray-400 text-lg mb-8">
-            Let's combine our 9 elements to build your digital masterpiece
+            Let's transform your business with Nine Pillars AI services and start generating revenue immediately
           </p>
           <button
             onClick={() => onNavigate('start-project')}
             className="px-8 py-4 bg-[#FF7A00] text-[#1A1A1A] rounded-lg hover:bg-[#FF7A00]/90 transition-all transform hover:scale-105"
           >
-            Start Your Project
+            Start Your AI Transformation
           </button>
         </div>
       </section>
