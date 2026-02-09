@@ -23,7 +23,10 @@ export function StartProjectPage({ selectedPlan, onNavigate }: StartProjectPageP
   });
 
   const plans = [
-    { name: 'EventOS Platform', price: '$2,999 CAD', value: 'eventos', description: 'Complete event management system with voting, contests, and VIP features' },
+    { name: 'EventOS Basic Boost', price: '$1,500 CAD', value: 'basic', description: 'EventOS Platform License with basic features' },
+    { name: 'EventOS Standard Pro', price: '$3,000 CAD', value: 'standard', description: 'EventOS + AI Event Operator + Analytics' },
+    { name: 'EventOS Premium Elite', price: '$5,000 CAD', value: 'premium', description: 'EventOS + AI + White-label Rights' },
+    { name: 'EventOS Custom Scale', price: 'Custom Pricing', value: 'custom', description: 'Enterprise solutions with custom features' },
     { name: 'Sound Clash Platform', price: '$4,999 CAD', value: 'soundclash', description: 'DJ battle platform with real-time voting and song requests' },
     { name: 'The Union Wedding OS', price: '$7,999 CAD', value: 'union', description: 'Wedding management platform with guest coordination and vendor management' },
     { name: 'Custom Development', price: 'Starting at $15,000 CAD', value: 'custom', description: 'Tailored solutions including AI automation, web development, and digital transformation' },
