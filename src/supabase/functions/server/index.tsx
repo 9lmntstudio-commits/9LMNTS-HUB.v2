@@ -51,7 +51,7 @@ app.post("/make-server-662c70dc/auth/signup", async (c) => {
     const { data, error } = await supabaseAdmin.auth.admin.createUser({
       email,
       password,
-      user_metadata: { 
+      user_metadata: {
         name,
         role // Store role in user metadata (user or admin)
       },
@@ -64,8 +64,8 @@ app.post("/make-server-662c70dc/auth/signup", async (c) => {
       return c.json({ error: error.message }, 400);
     }
 
-    return c.json({ 
-      success: true, 
+    return c.json({
+      success: true,
       user: {
         id: data.user.id,
         email: data.user.email,
@@ -84,14 +84,14 @@ app.get("/make-server-662c70dc/auth/verify", async (c) => {
   try {
     const authHeader = c.req.header('Authorization');
     console.log('Auth header received:', authHeader ? 'Present' : 'Missing');
-    
+
     if (!authHeader) {
       console.error('Verification error: No Authorization header');
       return c.json({ error: 'No access token provided' }, 401);
     }
 
     const accessToken = authHeader.split(' ')[1];
-    
+
     if (!accessToken) {
       console.error('Verification error: No access token in header');
       return c.json({ error: 'No access token provided' }, 401);
@@ -114,7 +114,7 @@ app.get("/make-server-662c70dc/auth/verify", async (c) => {
 
     console.log('User verified successfully:', user.email, 'Role:', user.user_metadata?.role);
 
-    return c.json({ 
+    return c.json({
       user: {
         id: user.id,
         email: user.email,
@@ -133,13 +133,13 @@ app.get("/make-server-662c70dc/admin/users", async (c) => {
   try {
     const authHeader = c.req.header('Authorization');
     console.log('Admin users request - Auth header:', authHeader ? 'Present' : 'Missing');
-    
+
     if (!authHeader) {
       return c.json({ error: 'Unauthorized' }, 401);
     }
 
     const accessToken = authHeader.split(' ')[1];
-    
+
     if (!accessToken) {
       console.error('No access token found in header');
       return c.json({ error: 'Unauthorized' }, 401);
@@ -179,7 +179,7 @@ app.get("/make-server-662c70dc/admin/users", async (c) => {
 
     console.log(`Successfully fetched ${users.length} users`);
 
-    return c.json({ 
+    return c.json({
       users: users.map(u => ({
         id: u.id,
         email: u.email,
@@ -198,7 +198,7 @@ app.get("/make-server-662c70dc/admin/users", async (c) => {
 app.get("/make-server-662c70dc/clients", async (c) => {
   try {
     const authHeader = c.req.header('Authorization');
-    
+
     if (!authHeader) {
       return c.json({ error: 'Unauthorized' }, 401);
     }
@@ -212,7 +212,7 @@ app.get("/make-server-662c70dc/clients", async (c) => {
 
     console.log('Fetching all clients...');
     const clients = await kv.getByPrefix('client:');
-    
+
     return c.json({ clients: clients || [] });
   } catch (error) {
     console.error('Error fetching clients:', error);
@@ -224,7 +224,7 @@ app.get("/make-server-662c70dc/clients", async (c) => {
 app.post("/make-server-662c70dc/clients", async (c) => {
   try {
     const authHeader = c.req.header('Authorization');
-    
+
     if (!authHeader) {
       return c.json({ error: 'Unauthorized' }, 401);
     }
@@ -237,7 +237,7 @@ app.post("/make-server-662c70dc/clients", async (c) => {
     }
 
     const clientData = await c.req.json();
-    
+
     if (!clientData.name || !clientData.email) {
       return c.json({ error: 'Name and email are required' }, 400);
     }
@@ -252,7 +252,7 @@ app.post("/make-server-662c70dc/clients", async (c) => {
     };
 
     await kv.set(`client:${clientId}`, client);
-    
+
     console.log(`Client created: ${clientId}`);
     return c.json({ success: true, client });
   } catch (error) {
@@ -265,7 +265,7 @@ app.post("/make-server-662c70dc/clients", async (c) => {
 app.put("/make-server-662c70dc/clients/:id", async (c) => {
   try {
     const authHeader = c.req.header('Authorization');
-    
+
     if (!authHeader) {
       return c.json({ error: 'Unauthorized' }, 401);
     }
@@ -279,9 +279,9 @@ app.put("/make-server-662c70dc/clients/:id", async (c) => {
 
     const clientId = c.req.param('id');
     const updates = await c.req.json();
-    
+
     const existingClient = await kv.get(`client:${clientId}`);
-    
+
     if (!existingClient) {
       return c.json({ error: 'Client not found' }, 404);
     }
@@ -294,7 +294,7 @@ app.put("/make-server-662c70dc/clients/:id", async (c) => {
     };
 
     await kv.set(`client:${clientId}`, updatedClient);
-    
+
     console.log(`Client updated: ${clientId}`);
     return c.json({ success: true, client: updatedClient });
   } catch (error) {
@@ -307,7 +307,7 @@ app.put("/make-server-662c70dc/clients/:id", async (c) => {
 app.delete("/make-server-662c70dc/clients/:id", async (c) => {
   try {
     const authHeader = c.req.header('Authorization');
-    
+
     if (!authHeader) {
       return c.json({ error: 'Unauthorized' }, 401);
     }
@@ -320,9 +320,9 @@ app.delete("/make-server-662c70dc/clients/:id", async (c) => {
     }
 
     const clientId = c.req.param('id');
-    
+
     await kv.del(`client:${clientId}`);
-    
+
     console.log(`Client deleted: ${clientId}`);
     return c.json({ success: true });
   } catch (error) {
@@ -335,7 +335,7 @@ app.delete("/make-server-662c70dc/clients/:id", async (c) => {
 app.get("/make-server-662c70dc/projects", async (c) => {
   try {
     const authHeader = c.req.header('Authorization');
-    
+
     if (!authHeader) {
       return c.json({ error: 'Unauthorized' }, 401);
     }
@@ -349,7 +349,7 @@ app.get("/make-server-662c70dc/projects", async (c) => {
 
     console.log('Fetching all projects...');
     const projects = await kv.getByPrefix('project:');
-    
+
     return c.json({ projects: projects || [] });
   } catch (error) {
     console.error('Error fetching projects:', error);
@@ -361,7 +361,7 @@ app.get("/make-server-662c70dc/projects", async (c) => {
 app.post("/make-server-662c70dc/projects", async (c) => {
   try {
     const authHeader = c.req.header('Authorization');
-    
+
     if (!authHeader) {
       return c.json({ error: 'Unauthorized' }, 401);
     }
@@ -374,7 +374,7 @@ app.post("/make-server-662c70dc/projects", async (c) => {
     }
 
     const projectData = await c.req.json();
-    
+
     if (!projectData.name || !projectData.type) {
       return c.json({ error: 'Name and type are required' }, 400);
     }
@@ -389,7 +389,7 @@ app.post("/make-server-662c70dc/projects", async (c) => {
     };
 
     await kv.set(`project:${projectId}`, project);
-    
+
     console.log(`Project created: ${projectId}`);
     return c.json({ success: true, project });
   } catch (error) {
@@ -402,7 +402,7 @@ app.post("/make-server-662c70dc/projects", async (c) => {
 app.put("/make-server-662c70dc/projects/:id", async (c) => {
   try {
     const authHeader = c.req.header('Authorization');
-    
+
     if (!authHeader) {
       return c.json({ error: 'Unauthorized' }, 401);
     }
@@ -416,9 +416,9 @@ app.put("/make-server-662c70dc/projects/:id", async (c) => {
 
     const projectId = c.req.param('id');
     const updates = await c.req.json();
-    
+
     const existingProject = await kv.get(`project:${projectId}`);
-    
+
     if (!existingProject) {
       return c.json({ error: 'Project not found' }, 404);
     }
@@ -431,7 +431,7 @@ app.put("/make-server-662c70dc/projects/:id", async (c) => {
     };
 
     await kv.set(`project:${projectId}`, updatedProject);
-    
+
     console.log(`Project updated: ${projectId}`);
     return c.json({ success: true, project: updatedProject });
   } catch (error) {
@@ -444,7 +444,7 @@ app.put("/make-server-662c70dc/projects/:id", async (c) => {
 app.delete("/make-server-662c70dc/projects/:id", async (c) => {
   try {
     const authHeader = c.req.header('Authorization');
-    
+
     if (!authHeader) {
       return c.json({ error: 'Unauthorized' }, 401);
     }
@@ -457,9 +457,9 @@ app.delete("/make-server-662c70dc/projects/:id", async (c) => {
     }
 
     const projectId = c.req.param('id');
-    
+
     await kv.del(`project:${projectId}`);
-    
+
     console.log(`Project deleted: ${projectId}`);
     return c.json({ success: true });
   } catch (error) {
@@ -472,23 +472,24 @@ app.delete("/make-server-662c70dc/projects/:id", async (c) => {
 app.post("/make-server-662c70dc/ai-empire-lead", async (c) => {
   try {
     const leadData = await c.req.json();
-    
+
     console.log('🚀 AI Empire Lead Received:', leadData);
-    
+
     // Forward to your local AI Empire webhook server
-    const webhookResponse = await fetch('http://localhost:8000/api/submit-lead', {
+    const aiEmpireUrl = Deno.env.get('AI_EMPIRE_URL') || 'http://localhost:8000/api/submit-lead';
+    const webhookResponse = await fetch(aiEmpireUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-      'User-Agent': 'Supabase-Edge-Function'
+        'User-Agent': 'Supabase-Edge-Function'
       },
       body: JSON.stringify(leadData)
     });
-    
+
     if (webhookResponse.ok) {
       const webhookResult = await webhookResponse.json();
       console.log('✅ AI Empire processed lead:', webhookResult);
-      
+
       // Also store in Supabase for backup
       const { data, error } = await supabase
         .from('leads')
@@ -507,16 +508,16 @@ app.post("/make-server-662c70dc/ai-empire-lead", async (c) => {
           created_at: new Date().toISOString()
         }])
         .select();
-      
+
       if (error) {
         console.error('❌ Supabase storage error:', error);
-        return c.json({ 
+        return c.json({
           error: 'AI Empire processed but Supabase storage failed',
           ai_result: webhookResult,
-          supabase_error: error 
+          supabase_error: error
         }, 500);
       }
-      
+
       return c.json({
         success: true,
         message: 'Lead processed by AI Empire',
@@ -525,12 +526,12 @@ app.post("/make-server-662c70dc/ai-empire-lead", async (c) => {
       });
     } else {
       console.error('❌ AI Empire webhook error:', webhookResponse.statusText);
-      return c.json({ 
+      return c.json({
         error: 'Failed to forward to AI Empire',
-        status: webhookResponse.status 
+        status: webhookResponse.status
       }, 500);
     }
-    
+
   } catch (error) {
     console.error('❌ Lead submission error:', error);
     return c.json({ error: 'Failed to process lead' }, 500);

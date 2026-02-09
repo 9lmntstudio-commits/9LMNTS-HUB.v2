@@ -10,11 +10,13 @@ from typing import Dict, Any, Optional, List
 import os
 import logging
 import asyncio
+import json
 from datetime import datetime
 from dotenv import load_dotenv
 
-# Import LoA Brain
+# Import LoA Brain and Integrations
 from loa_brain import LOABrain, NINE_PILLARS_SERVICES, QUICK_SALES_PACKAGES
+from notion_integration import NotionIntegration
 
 # Load environment variables
 load_dotenv()
@@ -39,8 +41,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Initialize LoA Brain
+# Initialize LoA Brain and Integrations
 brain = LOABrain()
+notion = NotionIntegration()
 
 # Pydantic models
 class ChatRequest(BaseModel):
@@ -182,6 +185,27 @@ async def create_lead(lead: LeadRequest):
     except Exception as e:
         logger.error(f"Error creating lead: {e}")
         raise HTTPException(status_code=500, detail="Failed to create lead")
+
+@app.post("/api/submit-lead")
+async def submit_lead_v2(payload: Dict[str, Any], background_tasks: BackgroundTasks):
+    """
+    Compatibility endpoint for Supabase Edge Functions.
+    Orchestrates the LOA Brain analysis and Notion sync for inbound leads.
+    """
+    logger.info(f"🚀 Incoming Edge Function Lead: {payload.get('email')}")
+    
+    # 1. Background task: Sync to Notion
+    background_tasks.add_task(notion.add_lead_to_notion, payload)
+    
+    # 2. Process through LoA Brain
+    assessment = brain.think(f"New Lead: {json.dumps(payload)}")
+    
+    return {
+        "status": "imperial_success",
+        "message": "LOA Brain has processed the lead and synced to Notion.",
+        "assessment": assessment,
+        "recommended_tier": "premium" if "premium" in str(payload).lower() else "standard"
+    }
 
 @app.post("/proposal", response_model=Dict)
 async def generate_proposal(proposal: ProposalRequest):
