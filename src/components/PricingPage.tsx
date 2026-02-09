@@ -10,10 +10,10 @@ export function PricingPage({ onNavigate }: PricingPageProps) {
 
   const pricingTiers = [
     {
-      name: 'Basic Boost',
+      name: 'EventOS Basic Boost',
       price: '$1,500',
       planValue: 'basic',
-      description: 'Startups/Small Projects',
+      description: 'EventOS Platform License with basic features',
       features: [
         'Initial Concept',
         '1 Revision Round',
@@ -26,10 +26,10 @@ export function PricingPage({ onNavigate }: PricingPageProps) {
       popular: false,
     },
     {
-      name: 'Standard Pro',
+      name: 'EventOS Standard Pro',
       price: '$3,000',
       planValue: 'standard',
-      description: 'Growing Businesses',
+      description: 'EventOS + AI Event Operator + Analytics',
       features: [
         'Everything in Basic Boost',
         'Full Wireframe',
@@ -43,10 +43,10 @@ export function PricingPage({ onNavigate }: PricingPageProps) {
       popular: false,
     },
     {
-      name: 'Premium Elite',
+      name: 'EventOS Premium Elite',
       price: '$5,000',
       planValue: 'premium',
-      description: 'Established Brands',
+      description: 'EventOS + AI + White-label Rights',
       features: [
         'Everything in Standard Pro',
         'Full UX Research',
@@ -62,10 +62,10 @@ export function PricingPage({ onNavigate }: PricingPageProps) {
       popular: true,
     },
     {
-      name: 'Custom Scale',
+      name: 'EventOS Custom Scale',
       price: 'Custom',
       planValue: 'custom',
-      description: 'High-End/Large Scope',
+      description: 'Enterprise solutions with custom features',
       features: [
         'Large-scale Applications',
         'Full Brand Overhaul',
@@ -126,7 +126,7 @@ export function PricingPage({ onNavigate }: PricingPageProps) {
             <span className="font-futuristic">The</span> <span className="font-graffiti text-[#FF7A00]">Element Levels</span>
           </h1>
           <p className="text-lg sm:text-xl text-gray-400 max-w-3xl mx-auto">
-            Choose the perfect tier for your project. All plans include our signature 
+            Choose the perfect tier for your project. All plans include our signature
             9 Elements approach to digital excellence
           </p>
         </div>
@@ -139,11 +139,10 @@ export function PricingPage({ onNavigate }: PricingPageProps) {
             {pricingTiers.slice(0, 3).map((tier, index) => (
               <div
                 key={index}
-                className={`p-8 rounded-lg transition-all ${
-                  tier.popular
+                className={`p-8 rounded-lg transition-all ${tier.popular
                     ? 'bg-[#222222] border-2 border-[#FF7A00] shadow-lg shadow-[#FF7A00]/20 scale-105'
                     : 'bg-[#222222] border border-[#FF7A00]/20'
-                }`}
+                  }`}
               >
                 {tier.popular && (
                   <div className="mb-4">
@@ -167,11 +166,10 @@ export function PricingPage({ onNavigate }: PricingPageProps) {
                 </ul>
                 <button
                   onClick={() => onNavigate('start-project', tier.planValue)}
-                  className={`w-full py-3 rounded-lg transition-all ${
-                    tier.popular
+                  className={`w-full py-3 rounded-lg transition-all ${tier.popular
                       ? 'bg-[#FF7A00] text-[#1A1A1A] hover:bg-[#FF7A00]/90'
                       : 'bg-transparent border border-[#FF7A00] text-[#FF7A00] hover:bg-[#FF7A00]/10'
-                  }`}
+                    }`}
                 >
                   Select Plan
                 </button>
@@ -313,9 +311,8 @@ export function PricingPage({ onNavigate }: PricingPageProps) {
                 >
                   <span className="text-white pr-4">{faq.question}</span>
                   <HelpCircle
-                    className={`text-[#FF7A00] flex-shrink-0 transition-transform ${
-                      openFaq === index ? 'rotate-180' : ''
-                    }`}
+                    className={`text-[#FF7A00] flex-shrink-0 transition-transform ${openFaq === index ? 'rotate-180' : ''
+                      }`}
                     size={20}
                   />
                 </button>

@@ -27,10 +27,6 @@ export function StartProjectPage({ selectedPlan, onNavigate }: StartProjectPageP
     { name: 'EventOS Standard Pro', price: '$3,000 CAD', value: 'standard', description: 'EventOS + AI Event Operator + Analytics' },
     { name: 'EventOS Premium Elite', price: '$5,000 CAD', value: 'premium', description: 'EventOS + AI + White-label Rights' },
     { name: 'EventOS Custom Scale', price: 'Custom Pricing', value: 'custom', description: 'Enterprise solutions with custom features' },
-    { name: 'Sound Clash Platform', price: '$4,999 CAD', value: 'soundclash', description: 'DJ battle platform with real-time voting and song requests' },
-    { name: 'The Union Wedding OS', price: '$7,999 CAD', value: 'union', description: 'Wedding management platform with guest coordination and vendor management' },
-    { name: 'Custom Development', price: 'Starting at $15,000 CAD', value: 'custom', description: 'Tailored solutions including AI automation, web development, and digital transformation' },
-    { name: 'Digital Consulting', price: '$3,999 CAD', value: 'consulting', description: 'Strategic guidance for digital growth and process optimization' },
   ];
 
   const projectTypes = [
@@ -83,12 +79,12 @@ export function StartProjectPage({ selectedPlan, onNavigate }: StartProjectPageP
         status: 'pending',
         created_at: new Date().toISOString()
       };
-      
+
       submissions.push(newSubmission);
       localStorage.setItem('project_submissions', JSON.stringify(submissions));
-      
+
       console.log('Submission saved locally:', newSubmission);
-      
+
       // Send to 9LMNTS API for Notion sync and AI processing
       try {
         const response = await fetch(`https://vfrxxfviaykafzbxpehw.supabase.co/functions/v1/ai-empire-lead-submission`, {
@@ -108,7 +104,7 @@ export function StartProjectPage({ selectedPlan, onNavigate }: StartProjectPageP
             description: formData.description
           })
         });
-        
+
         if (response.ok) {
           const result = await response.json();
           console.log('✅ Lead synced to Notion:', result);
@@ -120,21 +116,21 @@ export function StartProjectPage({ selectedPlan, onNavigate }: StartProjectPageP
       } catch (apiError) {
         console.log('⚠️ Could not reach API, data saved locally only');
       }
-      
+
       // Also try to save to Supabase if available (won't fail if table doesn't exist)
       try {
         const supabase = getSupabaseClient();
         const { data, error } = await supabase
           .from('project_submissions')
           .insert([newSubmission]);
-        
+
         if (!error) {
           console.log('Also saved to Supabase:', data);
         }
       } catch (supabaseError) {
         console.log('Supabase not available, data saved locally only');
       }
-      
+
       setStep(5); // Show success message
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -145,9 +141,9 @@ export function StartProjectPage({ selectedPlan, onNavigate }: StartProjectPageP
   const isStepValid = () => {
     switch (step) {
       case 1:
-        return formData.plan !== '';
+        return true; // Step 1 is just review of selected plan
       case 2:
-        return formData.projectType !== '' && formData.timeline !== '';
+        return formData.plan !== '' && formData.projectType !== '' && formData.timeline !== '';
       case 3:
         return formData.name !== '' && formData.email !== '';
       default:
@@ -248,19 +244,17 @@ export function StartProjectPage({ selectedPlan, onNavigate }: StartProjectPageP
             {[1, 2, 3, 4].map((num) => (
               <div key={num} className="flex items-center flex-1">
                 <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${
-                    step >= num
+                  className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${step >= num
                       ? 'bg-[#FF7A00] text-[#1A1A1A]'
                       : 'bg-[#222222] text-gray-400 border border-[#FF7A00]/20'
-                  }`}
+                    }`}
                 >
                   {step > num ? <Check size={20} /> : num}
                 </div>
                 {num < 4 && (
                   <div
-                    className={`flex-1 h-1 mx-2 transition-all ${
-                      step > num ? 'bg-[#FF7A00]' : 'bg-[#222222]'
-                    }`}
+                    className={`flex-1 h-1 mx-2 transition-all ${step > num ? 'bg-[#FF7A00]' : 'bg-[#222222]'
+                      }`}
                   />
                 )}
               </div>
@@ -276,64 +270,84 @@ export function StartProjectPage({ selectedPlan, onNavigate }: StartProjectPageP
 
         {/* Form Steps */}
         <div className="bg-[#222222] border border-[#FF7A00]/20 rounded-lg p-8">
-          {/* Step 1: Select Plan */}
+          {/* Step 1: Show Selected Plan */}
           {step === 1 && (
-            <div>
-              <h2 className="text-2xl text-white mb-6">Choose Your Plan</h2>
-              <div className="grid sm:grid-cols-2 gap-4">
-                {plans.map((plan) => (
-                  <div
-                    key={plan.value}
-                    onClick={() => handleInputChange('plan', plan.value)}
-                    className={`p-6 rounded-lg border-2 cursor-pointer transition-all ${
-                      formData.plan === plan.value
-                        ? 'border-[#FF7A00] bg-[#FF7A00]/10'
-                        : 'border-[#FF7A00]/20 hover:border-[#FF7A00]/40'
-                    }`}
-                  >
-                    <h3 className="text-white text-xl mb-2">{plan.name}</h3>
-                    <p className="text-[#FF7A00] text-lg">{plan.price}</p>
-                  </div>
-                ))}
+            <div className="text-center py-8">
+              <h2 className="text-2xl text-white mb-6">Your Selected Plan</h2>
+              <div className="max-w-md mx-auto p-8 rounded-lg border-2 border-[#FF7A00] bg-[#FF7A00]/10">
+                <h3 className="text-white text-3xl mb-2">
+                  {plans.find(p => p.value === formData.plan)?.name || 'Custom Solution'}
+                </h3>
+                <p className="text-[#FF7A00] text-2xl font-futuristic mb-4">
+                  {plans.find(p => p.value === formData.plan)?.price || 'Contacting...'}
+                </p>
+                <p className="text-gray-400">
+                  {plans.find(p => p.value === formData.plan)?.description || 'Tailored to your needs'}
+                </p>
               </div>
+              <p className="mt-8 text-gray-400 italic">
+                You can modify your plan or add project details in the next step.
+              </p>
             </div>
           )}
 
-          {/* Step 2: Project Details */}
+          {/* Step 2: Project Details & Plan Modification */}
           {step === 2 && (
             <div>
               <h2 className="text-2xl text-white mb-6">Project Details</h2>
-              <div className="space-y-6">
+              <div className="space-y-8">
+                {/* Plan Modification */}
                 <div>
-                  <label className="block text-white mb-2">Project Type *</label>
-                  <select
-                    value={formData.projectType}
-                    onChange={(e) => handleInputChange('projectType', e.target.value)}
-                    className="w-full px-4 py-3 bg-[#1A1A1A] border border-[#FF7A00]/20 rounded-lg text-white focus:border-[#FF7A00] focus:outline-none"
-                  >
-                    <option value="">Select a project type</option>
-                    {projectTypes.map((type) => (
-                      <option key={type} value={type}>
-                        {type}
-                      </option>
+                  <label className="block text-white mb-4 font-semibold text-lg">Modify Plan (Optional)</label>
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    {plans.map((plan) => (
+                      <div
+                        key={plan.value}
+                        onClick={() => handleInputChange('plan', plan.value)}
+                        className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${formData.plan === plan.value
+                            ? 'border-[#FF7A00] bg-[#FF7A00]/10'
+                            : 'border-[#FF7A00]/20 hover:border-[#FF7A00]/40'
+                          }`}
+                      >
+                        <h3 className="text-white font-bold">{plan.name}</h3>
+                        <p className="text-[#FF7A00] text-sm">{plan.price}</p>
+                      </div>
                     ))}
-                  </select>
+                  </div>
                 </div>
 
-                <div>
-                  <label className="block text-white mb-2">Expected Timeline *</label>
-                  <select
-                    value={formData.timeline}
-                    onChange={(e) => handleInputChange('timeline', e.target.value)}
-                    className="w-full px-4 py-3 bg-[#1A1A1A] border border-[#FF7A00]/20 rounded-lg text-white focus:border-[#FF7A00] focus:outline-none"
-                  >
-                    <option value="">Select timeline</option>
-                    {timelines.map((timeline) => (
-                      <option key={timeline} value={timeline}>
-                        {timeline}
-                      </option>
-                    ))}
-                  </select>
+                <div className="grid sm:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-white mb-2">Project Type *</label>
+                    <select
+                      value={formData.projectType}
+                      onChange={(e) => handleInputChange('projectType', e.target.value)}
+                      className="w-full px-4 py-3 bg-[#1A1A1A] border border-[#FF7A00]/20 rounded-lg text-white focus:border-[#FF7A00] focus:outline-none"
+                    >
+                      <option value="">Select a project type</option>
+                      {projectTypes.map((type) => (
+                        <option key={type} value={type}>
+                          {type}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-white mb-2">Expected Timeline *</label>
+                    <select
+                      value={formData.timeline}
+                      onChange={(e) => handleInputChange('timeline', e.target.value)}
+                      className="w-full px-4 py-3 bg-[#1A1A1A] border border-[#FF7A00]/20 rounded-lg text-white focus:border-[#FF7A00] focus:outline-none"
+                    >
+                      <option value="">Select timeline</option>
+                      {timelines.map((timeline) => (
+                        <option key={timeline} value={timeline}>
+                          {timeline}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
 
                 <div>
@@ -341,7 +355,7 @@ export function StartProjectPage({ selectedPlan, onNavigate }: StartProjectPageP
                   <textarea
                     value={formData.description}
                     onChange={(e) => handleInputChange('description', e.target.value)}
-                    rows={5}
+                    rows={4}
                     placeholder="Tell us about your project vision, goals, and any specific requirements..."
                     className="w-full px-4 py-3 bg-[#1A1A1A] border border-[#FF7A00]/20 rounded-lg text-white placeholder-gray-500 focus:border-[#FF7A00] focus:outline-none resize-none"
                   />
@@ -495,11 +509,10 @@ export function StartProjectPage({ selectedPlan, onNavigate }: StartProjectPageP
             <button
               onClick={handleBack}
               disabled={step === 1}
-              className={`px-6 py-3 rounded-lg inline-flex items-center gap-2 transition-all ${
-                step === 1
+              className={`px-6 py-3 rounded-lg inline-flex items-center gap-2 transition-all ${step === 1
                   ? 'bg-[#333333] text-gray-500 cursor-not-allowed'
                   : 'bg-transparent border border-[#FF7A00] text-[#FF7A00] hover:bg-[#FF7A00]/10'
-              }`}
+                }`}
             >
               <ArrowLeft size={20} />
               Back
@@ -509,11 +522,10 @@ export function StartProjectPage({ selectedPlan, onNavigate }: StartProjectPageP
               <button
                 onClick={handleNext}
                 disabled={!isStepValid()}
-                className={`px-6 py-3 rounded-lg inline-flex items-center gap-2 transition-all ${
-                  isStepValid()
+                className={`px-6 py-3 rounded-lg inline-flex items-center gap-2 transition-all ${isStepValid()
                     ? 'bg-[#FF7A00] text-[#1A1A1A] hover:bg-[#FF7A00]/90'
                     : 'bg-[#333333] text-gray-500 cursor-not-allowed'
-                }`}
+                  }`}
               >
                 Next
                 <ArrowRight size={20} />
