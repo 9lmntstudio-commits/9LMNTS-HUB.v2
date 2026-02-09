@@ -23,10 +23,11 @@ export function StartProjectPage({ selectedPlan, onNavigate }: StartProjectPageP
   });
 
   const plans = [
-    { name: 'Basic Boost', price: '$1,500 CAD', value: 'basic' },
-    { name: 'Standard Pro', price: '$3,000 CAD', value: 'standard' },
-    { name: 'Premium Elite', price: '$5,000 CAD', value: 'premium' },
-    { name: 'Custom Scale', price: 'Custom Pricing', value: 'custom' },
+    { name: 'EventOS Platform', price: '$2,999 CAD', value: 'eventos', description: 'Complete event management system with voting, contests, and VIP features' },
+    { name: 'Sound Clash Platform', price: '$4,999 CAD', value: 'soundclash', description: 'DJ battle platform with real-time voting and song requests' },
+    { name: 'The Union Wedding OS', price: '$7,999 CAD', value: 'union', description: 'Wedding management platform with guest coordination and vendor management' },
+    { name: 'Custom Development', price: 'Starting at $15,000 CAD', value: 'custom', description: 'Tailored solutions including AI automation, web development, and digital transformation' },
+    { name: 'Digital Consulting', price: '$3,999 CAD', value: 'consulting', description: 'Strategic guidance for digital growth and process optimization' },
   ];
 
   const projectTypes = [
