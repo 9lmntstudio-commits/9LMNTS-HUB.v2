@@ -468,4 +468,73 @@ app.delete("/make-server-662c70dc/projects/:id", async (c) => {
   }
 });
 
+// AI Empire Lead Submission - Forward to local webhook server
+app.post("/make-server-662c70dc/ai-empire-lead", async (c) => {
+  try {
+    const leadData = await c.req.json();
+    
+    console.log('🚀 AI Empire Lead Received:', leadData);
+    
+    // Forward to your local AI Empire webhook server
+    const webhookResponse = await fetch('http://localhost:8000/api/submit-lead', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      'User-Agent': 'Supabase-Edge-Function'
+      },
+      body: JSON.stringify(leadData)
+    });
+    
+    if (webhookResponse.ok) {
+      const webhookResult = await webhookResponse.json();
+      console.log('✅ AI Empire processed lead:', webhookResult);
+      
+      // Also store in Supabase for backup
+      const { data, error } = await supabase
+        .from('leads')
+        .insert([{
+          name: leadData.name,
+          email: leadData.email,
+          company: leadData.company,
+          business_type: leadData.project_type,
+          budget: parseFloat(leadData.budget?.replace(/[^0-9.]/g, '') || 0),
+          timeline: leadData.timeline,
+          project_type: leadData.project_type,
+          description: leadData.description,
+          plan: leadData.plan,
+          qualification_score: webhookResult.qualification_score || 0,
+          status: 'processed_by_ai_empire',
+          created_at: new Date().toISOString()
+        }])
+        .select();
+      
+      if (error) {
+        console.error('❌ Supabase storage error:', error);
+        return c.json({ 
+          error: 'AI Empire processed but Supabase storage failed',
+          ai_result: webhookResult,
+          supabase_error: error 
+        }, 500);
+      }
+      
+      return c.json({
+        success: true,
+        message: 'Lead processed by AI Empire',
+        ai_result: webhookResult,
+        supabase_id: data?.[0]?.id
+      });
+    } else {
+      console.error('❌ AI Empire webhook error:', webhookResponse.statusText);
+      return c.json({ 
+        error: 'Failed to forward to AI Empire',
+        status: webhookResponse.status 
+      }, 500);
+    }
+    
+  } catch (error) {
+    console.error('❌ Lead submission error:', error);
+    return c.json({ error: 'Failed to process lead' }, 500);
+  }
+});
+
 Deno.serve(app.fetch);

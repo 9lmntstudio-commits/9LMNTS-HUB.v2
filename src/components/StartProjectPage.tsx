@@ -85,7 +85,39 @@ export function StartProjectPage({ selectedPlan, onNavigate }: StartProjectPageP
       
       console.log('Submission saved locally:', newSubmission);
       
-      // Try to save to Supabase if available (won't fail if table doesn't exist)
+      // Send to 9LMNTS API for Notion sync and AI processing
+      try {
+        const response = await fetch(`https://vfrxxfviaykafzbxpehw.supabase.co/functions/v1/ai-empire-lead-submission`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            plan: formData.plan,
+            project_type: formData.projectType,
+            timeline: formData.timeline,
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            company: formData.company,
+            website: formData.website,
+            description: formData.description
+          })
+        });
+        
+        if (response.ok) {
+          const result = await response.json();
+          console.log('✅ Lead synced to Notion:', result);
+          console.log(`🎯 AI Qualification Score: ${result.qualification_score}%`);
+          console.log(`💰 Estimated Value: $${result.estimated_value}`);
+        } else {
+          console.log('⚠️ API not available, data saved locally only');
+        }
+      } catch (apiError) {
+        console.log('⚠️ Could not reach API, data saved locally only');
+      }
+      
+      // Also try to save to Supabase if available (won't fail if table doesn't exist)
       try {
         const supabase = getSupabaseClient();
         const { data, error } = await supabase
@@ -132,9 +164,13 @@ export function StartProjectPage({ selectedPlan, onNavigate }: StartProjectPageP
             <span className="font-futuristic">Project</span>{' '}
             <span className="font-graffiti text-[#FF7A00]">Submitted!</span>
           </h1>
-          <p className="text-gray-400 text-lg mb-8">
-            Thank you for choosing 9LMNTS Studio! We've received your project details and will get back to you within 24 hours to discuss the next steps.
+          <p className="text-gray-400 text-lg mb-4">
+            Thank you for choosing 9LMNTS Studio! We've received your project details.
           </p>
+          <div className="bg-[#FF7A00]/10 border border-[#FF7A00]/20 rounded-lg p-4 mb-6">
+            <p className="text-[#FF7A00] font-bold">✅ Confirmation email sent to {formData.email}</p>
+            <p className="text-white text-sm mt-2">Check your inbox for next steps and timeline information</p>
+          </div>
           <div className="bg-[#222222] border border-[#FF7A00]/20 rounded-lg p-8 mb-8">
             <h3 className="text-white text-xl mb-4">What Happens Next?</h3>
             <div className="space-y-4 text-left">

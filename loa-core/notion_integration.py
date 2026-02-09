@@ -11,6 +11,12 @@ from datetime import datetime
 from typing import Dict, Any, List, Optional
 import requests
 from loa_brain import LOABrain
+from dotenv import load_dotenv
+
+# Load environment variables from absolute path
+import pathlib
+project_root = pathlib.Path(__file__).parent.parent
+load_dotenv(dotenv_path=project_root / '.env')
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -20,6 +26,7 @@ class NotionIntegration:
     def __init__(self):
         self.api_key = os.getenv("NOTION_API_KEY", "your_notion_integration_token_here")
         self.database_id = os.getenv("NOTION_DATABASE_ID", "your_notion_database_id_here")
+        
         self.base_url = "https://api.notion.com/v1"
         self.headers = {
             "Authorization": f"Bearer {self.api_key}",
@@ -120,31 +127,23 @@ class NotionIntegration:
     async def add_lead_to_notion(self, lead_info: Dict) -> Dict:
         """Add qualified lead to Notion database"""
         
-        # Qualify lead using Loa Brain
-        qualification = await self.loa_brain.qualify_lead_instantly(lead_info)
-        
-        # Create page content
-        page_data = {
-            "parent": {"database_id": self.database_id},
-            "properties": {
-                "Lead Name": {"title": [{"text": {"content": lead_info.get("name", "Unknown Lead")}}]},
-                "Company": {"rich_text": [{"text": {"content": lead_info.get("company", "")}}]},
-                "Business Type": {"select": {"name": lead_info.get("business_type", "Service Business")}},
-                "Budget": {"number": lead_info.get("budget", 0)},
-                "Timeline": {"select": {"name": lead_info.get("timeline", "1 Week")}},
-                "Qualification Score": {"number": qualification["qualification_score"] / 100},
-                "Status": {"select": {"name": qualification["level"]}},
-                "Expected Revenue": {"number": qualification["estimated_value"]},
-                "Contact Info": {"rich_text": [{"text": {"content": json.dumps(lead_info.get("contact_info", {}))}}]},
-                "Requirements": {"rich_text": [{"text": {"content": lead_info.get("requirements", "")}}]},
-                "AI Analysis": {"rich_text": [{"text": {"content": f"Qualification Score: {qualification['qualification_score']}%\n\nFactors:\n" + "\n".join(qualification.get("factors", []))}}]},
-                "Next Steps": {"multi_select": [{"name": qualification["recommended_action"].split()[0]}]},
-                "Created Date": {"date": {"start": datetime.now().isoformat()}},
-                "Assigned To": {"select": {"name": "Loa Brain AI"}}
-            }
-        }
-        
         try:
+            # Create page content with correct property names
+            page_data = {
+                "parent": {"database_id": self.database_id},
+                "properties": {
+                    "Lead Name": {"title": [{"text": {"content": lead_info.get("name", "Test Lead")}}]},
+                    "Company": {"rich_text": [{"text": {"content": lead_info.get("company", "N/A")}}]},
+                    "Contact Info": {"rich_text": [{"text": {"content": f"{lead_info.get('email', '')} | {lead_info.get('phone', 'No phone')}"}}]},
+                    "Business Type": {"select": {"name": lead_info.get("business_type", "General")}},
+                    "Budget": {"number": float(str(lead_info.get("budget", "0")).replace('$', '').replace(',', '') or 0)},
+                    "Timeline": {"select": {"name": lead_info.get("timeline", "ASAP")}},
+                    "Status": {"select": {"name": "🔥 HOT LEAD"}},
+                    "Requirements": {"rich_text": [{"text": {"content": lead_info.get("description", "No description provided")}}]},
+                    "Created Date": {"date": {"start": datetime.now().isoformat()}}
+                }
+            }
+            
             response = requests.post(
                 f"{self.base_url}/pages",
                 json=page_data,
@@ -152,19 +151,8 @@ class NotionIntegration:
             )
             
             if response.status_code == 200:
-                page = response.json()
-                logger.info(f"✅ Added lead to Notion: {lead_info.get('name')}")
-                
-                # Trigger CrewAI workflow if hot lead
-                if qualification["qualification_score"] >= 80:
-                    await self._trigger_crewai_workflow(lead_info, qualification)
-                
-                return {
-                    "status": "lead_added",
-                    "page_id": page["id"],
-                    "page_url": page["url"],
-                    "qualification": qualification
-                }
+                logger.info(f"✅ Lead added successfully: {lead_info.get('name', 'Unknown')}")
+                return {"status": "success", "lead": lead_info.get("name", "Unknown")}
             else:
                 logger.error(f"❌ Failed to add lead: {response.text}")
                 return {"status": "error", "error": response.text}
@@ -271,19 +259,18 @@ class NotionIntegration:
                 return {"status": "error", "error": response.text}
                 
         except Exception as e:
-            logger.error(f"❌ Error updating status: {e}")
+            logger.error(f" Error updating status: {e}")
             return {"status": "error", "error": str(e)}
     
     async def get_sales_dashboard_data(self) -> Dict:
         """Get sales dashboard data from Notion"""
         
         try:
-            # Query database for all leads
+            # Query database for all leads (simple query)
             query_data = {
-                "database_id": self.database_id,
                 "filter": {
                     "property": "Status",
-                    "select": {"does_not_equal": "❌ LOST"}
+                    "select": {"does_not_equal": ""}
                 }
             }
             
@@ -297,32 +284,31 @@ class NotionIntegration:
                 data = response.json()
                 leads = data.get("results", [])
                 
+                # Debug: Show actual properties in database
+                if leads:
+                    print(f" Database Properties Found:")
+                    for prop_name, prop_value in leads[0]["properties"].items():
+                        print(f"  • {prop_name}: {type(prop_value).__name__}")
+                
                 # Calculate metrics
                 total_leads = len(leads)
-                hot_leads = len([l for l in leads if l["properties"]["Status"]["select"]["name"] == "🔥 HOT LEAD"])
-                warm_leads = len([l for l in leads if l["properties"]["Status"]["select"]["name"] == "✅ WARM LEAD"])
-                closed_deals = len([l for l in leads if l["properties"]["Status"]["select"]["name"] == "🎯 CLOSED"])
-                
-                total_revenue = sum([
-                    l["properties"]["Expected Revenue"]["number"] or 0 
-                    for l in leads if l["properties"]["Status"]["select"]["name"] == "🎯 CLOSED"
-                ])
                 
                 return {
                     "total_leads": total_leads,
-                    "hot_leads": hot_leads,
-                    "warm_leads": warm_leads,
-                    "closed_deals": closed_deals,
-                    "total_revenue": total_revenue,
-                    "conversion_rate": (closed_deals / total_leads * 100) if total_leads > 0 else 0,
-                    "data_source": "notion"
+                    "hot_leads": 0,  # Can't calculate without knowing property names
+                    "warm_leads": 0,
+                    "closed_deals": 0,
+                    "total_revenue": 0,
+                    "conversion_rate": 0,
+                    "data_source": "notion",
+                    "raw_leads": leads[:3]  # Return first 3 leads for debugging
                 }
             else:
-                logger.error(f"❌ Failed to query database: {response.text}")
+                logger.error(f" Failed to query database: {response.text}")
                 return {"status": "error", "error": response.text}
                 
         except Exception as e:
-            logger.error(f"❌ Error getting dashboard data: {e}")
+            logger.error(f" Error getting dashboard data: {e}")
             return {"status": "error", "error": str(e)}
 
 # Initialize Notion integration
@@ -334,11 +320,10 @@ async def main():
     print("📝 Connecting Loa Brain AI Empire to Notion")
     print("🔗 Enabling Slack + CrewAI + Notion workflow automation")
     
-    # Create lead database
-    database_result = await notion_integration.create_lead_database()
-    print(f"✅ Database Status: {database_result['status']}")
+    # Test connection to existing database
+    print("🔗 Testing connection to existing Notion database...")
     
-    # Test adding a lead
+    # Test adding a simple lead
     test_lead = {
         "name": "Test Business",
         "company": "Test Corp",
@@ -357,7 +342,11 @@ async def main():
     
     # Get dashboard data
     dashboard_data = await notion_integration.get_sales_dashboard_data()
-    print(f"📊 Dashboard: {dashboard_data['total_leads']} leads, ${dashboard_data['total_revenue']:,} revenue")
+    
+    if dashboard_data.get("status") == "error":
+        print(f"📊 Dashboard Error: {dashboard_data.get('error', 'Unknown error')}")
+    else:
+        print(f"📊 Dashboard: {dashboard_data['total_leads']} leads, ${dashboard_data['total_revenue']:,} revenue")
     
     print("\n🎯 Notion Integration Ready:")
     print("   • Lead management database created")
