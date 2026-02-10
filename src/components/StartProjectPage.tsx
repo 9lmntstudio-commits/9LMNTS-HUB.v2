@@ -23,6 +23,7 @@ export function StartProjectPage({ selectedPlan, onNavigate }: StartProjectPageP
   });
 
   const plans = [
+    { name: '7-Day Agentic Sprint', price: '$5,000 CAD', value: 'agentic-sprint', description: 'AI-Powered MVPs & Automation' },
     { name: 'EventOS Basic Boost', price: '$1,500 CAD', value: 'basic', description: 'EventOS Platform License with basic features' },
     { name: 'EventOS Standard Pro', price: '$3,000 CAD', value: 'standard', description: 'EventOS + AI Event Operator + Analytics' },
     { name: 'EventOS Premium Elite', price: '$5,000 CAD', value: 'premium', description: 'EventOS + AI + White-label Rights' },

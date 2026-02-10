@@ -1,4 +1,4 @@
-import { Mic2, Disc3, Paintbrush, Users, Radio, BookOpen, Lightbulb, Code, Palette, Brain, Zap, Globe, TrendingUp, Target, DollarSign } from 'lucide-react';
+import { Mic2, Disc3, Paintbrush, Users, Radio, BookOpen, Lightbulb, Code, Palette, Brain, Zap, Globe, TrendingUp, Target, DollarSign, Rocket } from 'lucide-react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 
 interface ServicesPageProps {
@@ -6,7 +6,24 @@ interface ServicesPageProps {
 }
 
 export function ServicesPage({ onNavigate }: ServicesPageProps) {
-  const tiers = [
+  const services = [
+    {
+      name: '7-Day Agentic Sprint',
+      price: '$5,000 CAD',
+      value: 'agentic-sprint',
+      description: 'AI-Powered MVPs & Automation',
+      icon: Rocket,
+      features: [
+        'AI Digital Twins for customer service',
+        'WhatsApp/SMS lead qualification bots',
+        'MVP development with Lovable + Supabase',
+        'CrewAI workflow automation',
+        'Content factories (1 speech → 30 viral clips)',
+        'Vector search for product catalogs'
+      ],
+      image: 'https://images.unsplash.com/photo-1729184648177-937c20cc3166?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxBSUyMGF1dXRvbWF0aW9uJTIwdGVjaG5vbG9neSUyMGludGVyZmFjZSUyMGRhc2hib2FyZHxlbnwxfHx8MTc3MDAwODAzOHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+      highlighted: true
+    },
     {
       name: 'EventOS Basic Boost',
       price: '$1,500 CAD',
@@ -52,16 +69,16 @@ export function ServicesPage({ onNavigate }: ServicesPageProps) {
         <div className="max-w-6xl mx-auto text-center">
           <div className="mb-6">
             <span className="px-4 py-2 bg-[#222222] border border-[#FF7A00]/30 rounded-full text-[#FF7A00] text-sm">
-              EventOS Licensing
+              AI Services & EventOS
             </span>
           </div>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl text-white mb-6">
-            <span className="font-futuristic">Choose Your</span><br />
-            <span className="font-graffiti text-[#FF7A00]">EventOS Tier</span>
+            <span className="font-futuristic">Transform Your Business with</span><br />
+            <span className="font-graffiti text-[#FF7A00]">AI Automation</span>
           </h1>
           <p className="text-lg sm:text-xl text-gray-400 max-w-3xl mx-auto">
-            Select the perfect licensing tier for your event platform.
-            All plans include our signature AI-driven EventOS core.
+            Deploy custom AI agents, build rapid MVPs, and automate your workflows.
+            From lead qualification to content factories—we ship production-ready solutions fast.
           </p>
         </div>
       </section>
@@ -69,20 +86,20 @@ export function ServicesPage({ onNavigate }: ServicesPageProps) {
       {/* Services Grid */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-[#0D0D0D]">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {tiers.map((tier, index) => {
-              const Icon = tier.icon || Zap;
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {services.map((service, index) => {
+              const Icon = service.icon || Rocket;
               return (
                 <div
                   key={index}
-                  onClick={() => onNavigate('start-project', tier.value)}
-                  className="group bg-[#222222] rounded-lg border border-[#FF7A00]/20 hover:border-[#FF7A00] transition-all hover:transform hover:scale-105 cursor-pointer overflow-hidden flex flex-col"
+                  onClick={() => onNavigate('start-project', service.value)}
+                  className={`group bg-[#222222] rounded-lg border ${service.highlighted ? 'border-[#FF7A00] shadow-[0_0_20px_rgba(255,122,0,0.3)]' : 'border-[#FF7A00]/20'} hover:border-[#FF7A00] transition-all hover:transform hover:scale-105 cursor-pointer overflow-hidden flex flex-col`}
                 >
                   {/* Image Section */}
                   <div className="relative h-48 overflow-hidden">
                     <ImageWithFallback
-                      src={tier.image}
-                      alt={tier.name}
+                      src={service.image}
+                      alt={service.name}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#222222] via-[#222222]/50 to-transparent"></div>
@@ -96,22 +113,20 @@ export function ServicesPage({ onNavigate }: ServicesPageProps) {
                   {/* Content Section */}
                   <div className="p-6 flex flex-col flex-1">
                     <h3 className="text-white text-xl mb-3 group-hover:text-[#FF7A00] transition-colors">
-                      {tier.name}
+                      {service.name}
                     </h3>
                     <p className="text-gray-400 text-sm mb-4 leading-relaxed flex-1">
-                      {tier.description}
+                      {service.description}
                     </p>
-                    <div className="mb-4">
-                      <span className="text-[#FF7A00] font-bold text-2xl">{tier.price}</span>
+                    <div className="flex flex-wrap gap-2">
+                      {service.features.map((feature, featureIndex) => (
+                        <span key={featureIndex} className="px-2 py-1 bg-[#222222] border border-[#FF7A00]/20 rounded text-[10px] text-gray-300">
+                          {feature}
+                        </span>
+                      ))}
                     </div>
-                    <div>
-                      <div className="flex flex-wrap gap-2">
-                        {tier.features.map((feature, featureIndex) => (
-                          <span key={featureIndex} className="px-2 py-1 bg-[#222222] border border-[#FF7A00]/20 rounded text-[10px] text-gray-300">
-                            {feature}
-                          </span>
-                        ))}
-                      </div>
+                    <div className="text-[#FF7A00] text-2xl font-bold">
+                      {service.price}
                     </div>
                     <button
                       className="mt-6 w-full py-3 bg-[#FF7A00] text-[#1A1A1A] font-bold rounded hover:bg-[#FF7A00]/90 transition-all opacity-0 group-hover:opacity-100"
